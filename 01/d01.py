@@ -6,7 +6,7 @@ import os
 def parse_data(data):
     left, right = [], []
     for line in data.splitlines():
-        first, second = line.split('   ')
+        first, second = line.split()
         left.append(int(first))
         right.append(int(second))
     return sorted(left), sorted(right), Counter(right)
