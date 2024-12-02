@@ -15,4 +15,4 @@ As every year, shoutout to the wonderful [AoC community on reddit](https://www.r
 Things I **L**earned, **R**evised or **I**mproved at in 2024:
 
 * [Day 1 Python](01/d01.py): reading comprehension (because I tried to solve a much harder puzzle for about 20 minutes...) and collections.Counter (**R**)
-* [Day 2 Python](02/d02.py): zip on the same list to create pairs (**R**) and pop(idx) (**R**) for a far too complicated solution, because I over-worried about edge cases
+* [Day 2 Python](02/d02.py): zip on the same list to create pairs for the first attempt (**R**), and pop(idx) (**R**) for a far too complicated solution, because I over-worried about edge cases
