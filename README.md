@@ -17,3 +17,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 1 Python](01/d01.py): reading comprehension (because I tried to solve a much harder puzzle for about 20 minutes...) and collections.Counter (**R**)
 * [Day 2 Python](02/d02.py): zip on the same list to create pairs for the first attempt (**R**), and pop(idx) (**R**) for a far too complicated solution, because I over-worried about edge cases
 * [Day 3 Python](03/d03.py): using logical operators in regex (**I**)
+* [Day 4 Python](04/d04.py): operations on numpy arrays (rotate, diagonals) (**I**)
