@@ -18,3 +18,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 2 Python](02/d02.py): zip on the same list to create pairs for the first attempt (**R**), and pop(idx) (**R**) for a far too complicated solution, because I over-worried about edge cases
 * [Day 3 Python](03/d03.py): using logical operators in regex (**I**)
 * [Day 4 Python](04/d04.py): operations on numpy arrays (rotate, diagonals) (**I**)
+* [Day 5 Python](05/d05.py): set operations (**R**) and writing custom comparator for functools.cmp_to_key (**R**)
