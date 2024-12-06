@@ -4,7 +4,7 @@ from itertools import cycle
 
 DAY = 6
 
-PLAYER = '^'
+GUARD = '^'
 OBJECT = '#'
 FLOOR = '.'
 
@@ -17,41 +17,41 @@ LEFT = (0, -1)
 def parse_data(data):
     parsed_map = {}
     raw_map = [list(row) for row in data.splitlines()]
-    player = None
+    guard = None
     for i in range(len(raw_map)):
         for j in range(len(raw_map[0])):
             current = raw_map[i][j]
-            if current == PLAYER:
-                player = (i, j)
+            if current == GUARD:
+                guard = (i, j)
                 parsed_map[(i, j)] = FLOOR
             else:
                 parsed_map[(i, j)] = current
-    return player, parsed_map
+    return guard, parsed_map
 
 
-def step(player, direction):
-    i, j = player
+def step(guard, direction):
+    i, j = guard
     di, dj = direction
     return (i+di, j+dj)
 
 
-def is_facing_wall(player, direction, game_map):
-    i, j = player
+def is_facing_wall(guard, direction, lab_map):
+    i, j = guard
     di, dj = direction
     next_spot = (i+di, j+dj)
-    if game_map[next_spot] == OBJECT:
+    if lab_map[next_spot] == OBJECT:
         return True
     return False
 
 
-def is_next_inside_map(player, direction, game_map):
-    i, j = player
+def is_next_inside_map(guard, direction, lab_map):
+    i, j = guard
     di, dj = direction
     next_spot = (i+di, j+dj)
-    return next_spot in game_map
+    return next_spot in lab_map
 
 
-def simulate_guard(player, game):
+def simulate_guard(guard, lab):
     DIRECTIONS = cycle([UP, RIGHT, DOWN, LEFT])
     next_dir = next(DIRECTIONS)
     visited = set()
@@ -59,31 +59,31 @@ def simulate_guard(player, game):
     path_is_cycle = False
 
     while True:
-        visited.add(player)
-        if (player, next_dir) in visited_cycle:
+        visited.add(guard)
+        if (guard, next_dir) in visited_cycle:
             path_is_cycle = True
             break
         else:
-            visited_cycle.add((player, next_dir))
+            visited_cycle.add((guard, next_dir))
 
-        if not is_next_inside_map(player, next_dir, game):
+        if not is_next_inside_map(guard, next_dir, lab):
             break
-        elif is_facing_wall(player, next_dir, game):
+        elif is_facing_wall(guard, next_dir, lab):
             next_dir = next(DIRECTIONS)
         else:
-            player = step(player, next_dir)
+            guard = step(guard, next_dir)
     return visited, path_is_cycle
 
 
-def find_obstacles(player, game):
-    possible_obstacles, _ = simulate_guard(player, game)
-    possible_obstacles.remove(player)
+def find_obstacles(guard, lab):
+    possible_obstacles, _ = simulate_guard(guard, lab)
+    possible_obstacles.remove(guard)
 
     obstacles = set()
     for candidate in possible_obstacles:
-        changed_game = game.copy()
-        changed_game[candidate] = OBJECT
-        _, is_cycle = simulate_guard(player, changed_game)
+        changed_lab = lab.copy()
+        changed_lab[candidate] = OBJECT
+        _, is_cycle = simulate_guard(guard, changed_lab)
         if is_cycle:
             obstacles.add(candidate)
 
@@ -104,14 +104,14 @@ TEST_DATA = '''....#.....
 
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
-player, game = parse_data(TEST_DATA)
-print('Simulation:', len(simulate_guard(player, game)[0]) == 41)
-print('Possible obstacles:', find_obstacles(player, game))
+guard, lab = parse_data(TEST_DATA)
+print('Simulation:', len(simulate_guard(guard, lab)[0]) == 41)
+print('Possible obstacles:', find_obstacles(guard, lab))
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
-    player, game = parse_data(data)
-    print('Simulation:', len(simulate_guard(player, game)[0]))
-    print('Possible obstacles:', find_obstacles(player, game))
+    guard, lab = parse_data(data)
+    print('Simulation:', len(simulate_guard(guard, lab)[0]))
+    print('Possible obstacles:', find_obstacles(guard, lab))
