@@ -1,6 +1,7 @@
 import os
 
 from operator import add, mul
+from math import log10, floor # used only in the alternative concatenate function
 from collections import deque # used only in the inefficient version
 
 DAY = 7
@@ -17,7 +18,8 @@ def parse_data(data):
 
 
 def con(a, b):
-    return int(str(a) + str(b))
+    return int(f'{a}{b}')
+    #return a * (10 ** (floor(log10(b)) + 1)) + b
 
 
 ''' FIRST ATTEMPT - INEFFICIENT
