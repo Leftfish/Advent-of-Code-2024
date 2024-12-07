@@ -19,4 +19,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 3 Python](03/d03.py): using logical operators in regex (**I**)
 * [Day 4 Python](04/d04.py): operations on numpy arrays (rotate, diagonals) (**I**)
 * [Day 5 Python](05/d05.py): set operations (**R**) and writing custom comparator for functools.cmp_to_key (**R**)
-* [Day 6 Python](06/d06.py): storing grinds in dictionaries (**R**)
+* [Day 6 Python](06/d06.py): storing grids in dictionaries (**R**)
