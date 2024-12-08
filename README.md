@@ -21,3 +21,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 5 Python](05/d05.py): set operations (**R**) and writing custom comparator for functools.cmp_to_key (**R**)
 * [Day 6 Python](06/d06.py): storing grids in dictionaries (**R**)
 * [Day 7 Python](07/d07.py): BFS (**R**) and Python operator (**R**) for a solution that's inefficient, but works; recursion (**I**) for an improved and much faster solution
+* [Day 8 Python](08/d08.py): set operations (**R**)
