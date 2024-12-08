@@ -4,6 +4,7 @@ from operator import add, mul
 from math import log10, floor # used only in the alternative concatenate function
 from collections import deque # used only in the inefficient version
 
+
 DAY = 7
 
 
