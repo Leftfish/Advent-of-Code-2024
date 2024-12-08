@@ -18,15 +18,13 @@ def parse_data(data):
 
 def find_antennae(grid):
     type_to_positions = defaultdict(list)
-    ant_coords = set()
     for coord, spot in grid.items():
         if spot != SPACE:
             type_to_positions[spot].append(coord)
-            ant_coords.add(coord)
-    return type_to_positions, ant_coords
+    return type_to_positions
 
 
-def check_antinode_pairs(this, other):
+def check_antinode_pairs(this, other, grid):
     nodes = set()
 
     di = this[0] - other[0]
@@ -35,8 +33,10 @@ def check_antinode_pairs(this, other):
     for p in (-1, 1):
         node_this = p * di + this[0], p * dj + this[1]
         node_other = p * di + other[0], p * dj + other[1]
-        nodes.add(node_this)
-        nodes.add(node_other)
+        if node_this in grid:
+            nodes.add(node_this)
+        if node_other in grid:
+            nodes.add(node_other)
     return nodes - set((this, other))
 
 
@@ -59,25 +59,18 @@ def check_antinode_harmonics(this, other, grid):
                 break
             nodes.add(node_other)
             j += 1
-    return nodes
+    return nodes | set((this, other))
 
 
 def find_antinodes(type_to_positions, grid):
     antinodes = set()
+    antinodes_harmonics = set()
     for atype in type_to_positions:
         coords = type_to_positions[atype]
         for this, other in combinations(coords, 2):
-            antinodes |= check_antinode_pairs(this, other)
-    return antinodes & grid.keys()
-
-
-def find_antinodes_harmonics(type_to_positions, grid, ant_coords):
-    antinodes = set()
-    for atype in type_to_positions:
-        coords = type_to_positions[atype]
-        for this, other in combinations(coords, 2):
-            antinodes |= check_antinode_harmonics(this, other, grid)
-    return antinodes & grid.keys() | ant_coords
+            antinodes |= check_antinode_pairs(this, other, grid)
+            antinodes_harmonics |= check_antinode_harmonics(this, other, grid)
+    return antinodes, antinodes_harmonics
 
 
 TEST_DATA = '''............
@@ -97,15 +90,15 @@ TEST_DATA = '''............
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
 grid = parse_data(TEST_DATA)
-ant_map, ant_coords = find_antennae(grid)
-print('Total antinodes in pairs:', len(find_antinodes(ant_map, grid)) == 14)
-print('Total antinodes with harmonics:', len(find_antinodes_harmonics(ant_map, grid, ant_coords)) == 34)
+antinodes, antinodes_harmonics = find_antinodes(find_antennae(grid), grid)
+print('Total antinodes in pairs:', len(antinodes) == 14)
+print('Total antinodes with harmonics:', len(antinodes_harmonics) == 34)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
     grid = parse_data(data)
-    ant_map, ant_coords = find_antennae(grid)
-    print('Total antinodes in pairs:', len(find_antinodes(ant_map, grid)))
-    print('Total antinodes with harmonics:', len(find_antinodes_harmonics(ant_map, grid, ant_coords)))
+    antinodes, antinodes_harmonics = find_antinodes(find_antennae(grid), grid)
+    print('Total antinodes in pairs:', len(antinodes))
+    print('Total antinodes with harmonics:', len(antinodes_harmonics))
