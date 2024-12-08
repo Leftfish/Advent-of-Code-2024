@@ -1,7 +1,7 @@
 import os
 
 from collections import defaultdict
-from itertools import combinations
+from itertools import permutations
 
 DAY = 8
 
@@ -30,13 +30,13 @@ def check_antinode_pairs(this, other, grid):
     di = this[0] - other[0]
     dj = this[1] - other[1]
 
-    for p in (-1, 1):
-        node_this = p * di + this[0], p * dj + this[1]
-        node_other = p * di + other[0], p * dj + other[1]
-        if node_this in grid:
-            nodes.add(node_this)
-        if node_other in grid:
-            nodes.add(node_other)
+    
+    node_this = di + this[0], dj + this[1]
+    node_other = di + other[0], dj + other[1]
+    if node_this in grid:
+        nodes.add(node_this)
+    if node_other in grid:
+        nodes.add(node_other)
     return nodes - set((this, other))
 
 
@@ -45,20 +45,20 @@ def check_antinode_harmonics(this, other, grid):
     di = this[0] - other[0]
     dj = this[1] - other[1]
 
-    for p in (-1, 1):
-        i, j = 1, 1
-        while True:
-            node_this = p * i * di + this[0], p * i * dj + this[1]
-            if node_this not in grid:
-                break
-            nodes.add(node_this)
-            i += 1
-        while True:
-            node_other = p * i * di + this[0], p * i * dj + this[1]
-            if node_other not in grid:
-                break
-            nodes.add(node_other)
-            j += 1
+    i, j = 1, 1
+    while True:
+        node_this = i * di + this[0], i * dj + this[1]
+        if node_this not in grid:
+            break
+        nodes.add(node_this)
+        i += 1
+    while True:
+        node_other = i * di + this[0], i * dj + this[1]
+        if node_other not in grid:
+            break
+        nodes.add(node_other)
+        j += 1
+
     return nodes | set((this, other))
 
 
@@ -67,7 +67,7 @@ def find_antinodes(type_to_positions, grid):
     antinodes_harmonics = set()
     for atype in type_to_positions:
         coords = type_to_positions[atype]
-        for this, other in combinations(coords, 2):
+        for this, other in permutations(coords, 2):
             antinodes |= check_antinode_pairs(this, other, grid)
             antinodes_harmonics |= check_antinode_harmonics(this, other, grid)
     return antinodes, antinodes_harmonics
