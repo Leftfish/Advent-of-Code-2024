@@ -166,15 +166,12 @@ to_move = memory[::]
 while to_move:
     file_to_move = to_move.pop()
     file_size = file_to_move.size
-    #print('Moving', file_to_move)
     for space in empty:
         if space[1] >= file_size:
             file_to_move.start = space[0]
             space[0] += file_to_move.size
             space[1] -= file_to_move.size
-            #print('file moved', file_to_move)
             break
-    #print('file not moved')
 
 print(memory, empty)
 x = 0
@@ -183,14 +180,76 @@ for file in memory:
 print(x)
 
 
-def pr(memory):
-    s = ''
-    for item in memory:
-        if item is None:
-            s += '.'
-        else:
-            s += str(item[0])
-    print(s)
+def prs(prog):
+    memory = []
+    files = []
+    empty = []
+    i = 0
+    switch = cycle(["DATA", "EMPTY"])
+    ptr = 0
+    for digit in prog:
+        current = next(switch)
+        if current == "DATA":
+            file_size = int(digit)
+            file_idx = i
+            file = [file_idx, file_size, ptr]
+            for _ in range(file_size):
+                memory.append(file_idx)
+            files.append(file)
+            i += 1
+        if current == 'EMPTY':
+            empty_size = int(digit)
+            for _ in range(empty_size):
+                memory.append(None)
+        ptr += int(digit)
+            
+            
+
+    return memory, files
+
+def find_space_for_file(memory, size):
+    i = 0
+    space = 0
+    while True:
+        if i >= len(memory):
+            return None
+        if memory[i] is None:
+            space = 1
+            j = i + 1
+            while j < len(memory) and memory[j] == None:
+                space += 1
+                j += 1    
+            if space >= size:
+                return i   
+        i += 1
+
+memory, files = prs(TEST_DATA)
+
+print(memory)
+print(files)
+step = 1
+while files:
+    to_move = files.pop()
+    idx, sz, ptr = to_move
+
+    start_write = find_space_for_file(memory, sz)
+    #print('check', idx, sz, ptr, start_write)
+    if start_write is not None and start_write < ptr:
+        #print('move to' ,start_write)
+        for i in range(start_write, start_write + sz):
+            memory[i] = idx
+
+        for j in range(ptr, ptr+sz):
+            memory[j] = None
+    print(step, memory)
+    step += 1
+
+print(memory)
+chk = 0
+for i, item in enumerate(memory):
+    if item is not None:
+        chk += i * item
+print(chk)
 
 print()
 print(f'Day {DAY} of Advent of Code!')
@@ -207,27 +266,75 @@ with open(input_path, mode='r', encoding='utf-8') as inp:
 
 
 
-memory, empty = parse(prog)
 
-#print(memory, empty)
-to_move = memory[::]
 
-while to_move:
+def prs(prog):
+    memory = []
+    files = []
+    empty = []
+    i = 0
+    switch = cycle(["DATA", "EMPTY"])
+    ptr = 0
+    for digit in prog:
+        current = next(switch)
+        if current == "DATA":
+            file_size = int(digit)
+            file_idx = i
+            file = [file_idx, file_size, ptr]
+            for _ in range(file_size):
+                memory.append(file_idx)
+            files.append(file)
+            i += 1
+        if current == 'EMPTY':
+            empty_size = int(digit)
+            for _ in range(empty_size):
+                memory.append(None)
+        ptr += int(digit)
+            
+            
 
-    file_to_move = to_move.pop()
-    file_size = file_to_move.size
-    #print('Moving', file_to_move)
-    for space in empty:
-        if space[1] >= file_size:
-            file_to_move.start = space[0]
-            space[0] += file_to_move.size
-            space[1] -= file_to_move.size
-            #print('file moved', file_to_move)
-            break
-    #print('file not moved')
+    return memory, files
 
-#print(memory, empty)
-x = 0
-for file in memory:
-    x += file.checksum()
-print(x)
+def find_space_for_file(memory, size):
+    i = 0
+    space = 0
+    while True:
+        if i >= len(memory):
+            return None
+        if memory[i] is None:
+            space = 1
+            j = i + 1
+            while j < len(memory) and memory[j] == None:
+                space += 1
+                j += 1    
+            if space >= size:
+                return i   
+        i += 1
+
+memory, files = prs(prog)
+
+print(memory)
+print(files)
+step = 1
+while files:
+    to_move = files.pop()
+    idx, sz, ptr = to_move
+
+    start_write = find_space_for_file(memory, sz)
+    #print('check', idx, sz, ptr, start_write)
+    if start_write is not None and start_write < ptr:
+        #print('move to' ,start_write)
+        for i in range(start_write, start_write + sz):
+            memory[i] = idx
+
+        for j in range(ptr, ptr+sz):
+            memory[j] = None
+    #print(step, memory)
+    step += 1
+
+#print(memory)
+chk = 0
+for i, item in enumerate(memory):
+    if item is not None:
+        chk += i * item
+print(chk)
