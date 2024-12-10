@@ -23,3 +23,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 7 Python](07/d07.py): BFS (**R**) and Python operator (**R**) for a solution that's inefficient, but works; recursion (**I**) for an improved and much faster solution
 * [Day 8 Python](08/d08.py): set operations (**R**)
 * [Day 9 Python](09/d09.py): OH GOSH, WHAT THE HELL WAS THAT. Spent far too many hours debugging a seemingly simple solution, ended up refreshing itertools.cycle (**R**), deques (**R**) and thinking with pointers (**R**) before figuring out where the bug was
+* [Day 10 Python](10/d10.py): iterative DFS (**R**)
