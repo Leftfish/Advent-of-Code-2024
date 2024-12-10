@@ -15,21 +15,14 @@ def parse_grid(data):
 
 
 def find_starts(grid):
-    starts = []
-    for k, v in grid.items():
-        if v == HEAD:
-            starts.append(k)
-    return starts
+    return [k for k, v in grid.items() if v == HEAD]
 
 
 def track_paths(grid, trailhead):
-    stack = []
-    position = (trailhead)
-
+    stack = [trailhead]
     visited_ends = set()
     all_paths = 0
 
-    stack.append(position)
     while stack:
         current = stack.pop()
         if grid[current] == END:
