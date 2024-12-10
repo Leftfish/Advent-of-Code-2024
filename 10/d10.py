@@ -24,26 +24,23 @@ def find_starts(grid):
 
 def track_paths(grid, trailhead):
     stack = []
-    path = [trailhead]
-    position = (trailhead, path)
+    position = (trailhead)
 
     visited_ends = set()
-    visited_paths = set()
+    all_paths = 0
 
     stack.append(position)
     while stack:
-        current, current_path = stack.pop()
+        current = stack.pop()
         if grid[current] == END:
             visited_ends.add(current)
-            visited_paths.add(tuple(current_path))
+            all_paths += 1
             continue
         i, j = current
         for adjacent in ((i-1, j), (i+1, j), (i, j-1), (i, j+1)):
             if adjacent in grid and grid[adjacent] == grid[current] + 1:
-                new_path = current_path.copy()
-                new_path.append(adjacent)
-                stack.append((adjacent, new_path))
-    return len(visited_ends), len(visited_paths)
+                stack.append(adjacent)
+    return len(visited_ends), all_paths
 
 
 TEST_DATA = '''89010123
