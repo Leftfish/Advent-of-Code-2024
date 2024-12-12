@@ -16,20 +16,21 @@ def parse_grid(data):
 def find_island(grid, start):
     visited = set()
     Q = deque([start])
+
     while Q:
         current = Q.popleft()
-        
         if current in visited:
             continue
         else:
             visited.add(current)
+
         i, j = current
-        val = grid[current]
         adjacents = [(i+1, j), (i-1, j), (i, j-1), (i, j+1)]
-        x = 0
+
         for adj in adjacents:
-            if adj in grid and grid[adj] == val and adj not in visited:
+            if adj in grid and grid[adj] == grid[current]:
                 Q.append(adj)
+
     return visited
 
 
@@ -64,7 +65,7 @@ def count_sides(island, grid):
         elif grid[this] != grid[other]:
             return True
         return False
-    
+
     total = 0
     sorted_points = sorted(island)
 
