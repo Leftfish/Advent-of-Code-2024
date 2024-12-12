@@ -25,3 +25,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 9 Python](09/d09.py): OH GOSH, WHAT THE HELL WAS THAT. Spent far too many hours debugging a seemingly simple solution, ended up refreshing itertools.cycle (**R**), deques (**R**) and thinking with pointers (**R**) before figuring out where the bug was
 * [Day 10 Python](10/d10.py): iterative DFS (**R**)
 * [Day 11 Python](11/d11.py): that you don't have to store everything that you count, just like [twice](https://github.com/Leftfish/Advent-of-Code-2021/blob/main/06/d06.py) in [2021](https://github.com/Leftfish/Advent-of-Code-2021/blob/main/14/d14.py) (**R**)
+* [Day 12 Python](12/d12.py): BFS (**R**), finding islands in 2d grid (**R**) and finding sides of a 2D polygon (**L**)
