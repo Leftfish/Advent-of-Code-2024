@@ -15,13 +15,15 @@ def solve(ax, bx, ay, by, x, y, adj):
     x += adj
     y += adj
     det = ax * by - bx * ay
-    det_ax = x * by - y * bx
-    det_ay = y * ax - x * ay
+    det_A = x * by - y * bx
+    det_B = y * ax - x * ay
 
-    final_a = det_ax/det
-    final_b = det_ay/det
+    final_a = det_A/det
+    final_b = det_B/det
 
     if final_a != int(final_a) or final_b != int(final_b):
+        return 0
+    if final_a < 0 or final_b < 0:
         return 0
     else:
         return 3 * final_a + final_b
