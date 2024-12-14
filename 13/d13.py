@@ -23,7 +23,7 @@ def solve(ax, bx, ay, by, x, y, adj):
 
     if final_a != int(final_a) or final_b != int(final_b):
         return 0
-    if final_a < 0 or final_b < 0:
+    elif final_a < 0 or final_b < 0:
         return 0
     else:
         return 3 * final_a + final_b
