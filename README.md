@@ -27,4 +27,5 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 11 Python](11/d11.py): that you don't have to store everything that you count, just like [twice](https://github.com/Leftfish/Advent-of-Code-2021/blob/main/06/d06.py) in [2021](https://github.com/Leftfish/Advent-of-Code-2021/blob/main/14/d14.py) (**R**)
 * [Day 12 Python](12/d12.py): BFS (**R**), finding islands in 2d grid (**R**) and finding sides of a 2D polygon (**L**)
 * [Day 13 Python](13/d13.py): linear algebra (**I**) and Cramer's rule (**L**)
-* [Day 14 Python](14/d14.py): using modulo (**R**) and matplotlib (**R**) for a buggy solution what didn't make it to the final one
+* [Day 14 Python](14/d14.py): using modulo (**R**) and saving plots made in matplotlib (**L**) (which I tried in a buggy solution what didn't make it to the final one)
+* [Day 15 Python](15/d15.py): reinventing the wheel, because that's what I did when I came up with something that turned out to be just flood-fill BFS (**R**)
