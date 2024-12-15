@@ -68,8 +68,8 @@ def show(grid):
 
     pic = [[None for h in range(max_j+1)] for w in range(max_i+1)]
 
-    for i in range(len(pic)):
-        for j in range(len(pic[0])):
+    for i, row in enumerate(pic):
+        for j, _ in enumerate(row):
             pic[i][j] = grid[(i, j)]
 
     for line in pic:
@@ -90,15 +90,15 @@ def check_move(robot, direction, grid, part):
         return []
 
     def vertical_move(robot, direction, grid):
-        to_move = []
         di, dj = DIRS[direction]
         next_field = (robot[0] + di, robot[1] + dj)
+
         if grid[next_field] == WALL:
-            return to_move
+            return []
         elif grid[next_field] == FLOOR:
-            to_move.append(robot)
+            return [robot]
         else:
-            to_move.append(robot)
+            to_move = [robot]
 
             boxes = deque()
             if grid[next_field] == BOX_L:
@@ -124,7 +124,7 @@ def check_move(robot, direction, grid, part):
                         next_box = (next_field, (next_field[0], next_field[1]+1))
                     elif grid[next_field] == BOX_R:
                         next_box = ((next_field[0], next_field[1]-1), next_field)
-                    if next_box and next_box not in boxes:
+                    if next_box and next_box not in visited:
                         boxes.append(next_box)
         return to_move
 
@@ -146,6 +146,13 @@ def make_moves(to_move, direction, grid, robot):
     return grid, robot
 
 
+def exec_instructions(grid, instructions, robot, part):
+    for direction in instructions:
+        to_move = check_move(robot, direction, grid, part)
+        grid, robot = make_moves(to_move, direction, grid, robot)
+    return grid
+
+
 def score(grid, part):
     s = 0
     for coord in grid:
@@ -153,13 +160,6 @@ def score(grid, part):
         if grid[coord] == search:
             s += 100 * coord[0] + coord[1]
     return s
-
-
-def move_boxes(grid, instructions, robot, part):
-    for direction in instructions:
-        to_move = check_move(robot, direction, grid, part)
-        grid, robot = make_moves(to_move, direction, grid, robot)
-    return grid
 
 
 TEST_DATA = '''##########
@@ -188,12 +188,12 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^'''
 print(f'Day {DAY} of Advent of Code!')
 grid, instructions, robot = parse(TEST_DATA)
 print('Testing...')
-print('Score on a small map:', score(move_boxes(*parse(TEST_DATA), 1), 1) == 10092)
-print('Score on a large map:', score(move_boxes(*parse_and_resize(TEST_DATA), 2), 2) == 9021)
+print('Score on a small map:', score(exec_instructions(*parse(TEST_DATA), 1), 1) == 10092)
+print('Score on a large map:', score(exec_instructions(*parse_and_resize(TEST_DATA), 2), 2) == 9021)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
-    print('Score on a small map:', score(move_boxes(*parse(data), 1), 1))
-    print('Score on a large map:', score(move_boxes(*parse_and_resize(data), 2), 2))
+    print('Score on a small map:', score(exec_instructions(*parse(data), 1), 1))
+    print('Score on a large map:', score(exec_instructions(*parse_and_resize(data), 2), 2))
