@@ -3,7 +3,7 @@
 import os
 
 import heapq
-from collections import defaultdict, deque
+from collections import defaultdict
 
 DAY = 16
 
@@ -75,17 +75,17 @@ def dijkstra(grid, start):
 
 
 def dijkstra2(grid, start):
-    distances = {vertex: float('inf') for vertex in grid if grid[vertex] != WALL}
-    distances[start] = 0
     visited = defaultdict(lambda: float('inf'))
     seats = set()
     best_cost = float('inf')
-
     path = set([start])
-    Q = deque([(start, RIGHT, 0, path)])
+
+    Q = []
+    heapq.heapify(Q)
+    heapq.heappush(Q, (0, start, RIGHT, path))
 
     while Q:
-        current_vertex, current_direction, current_cost, path = Q.popleft()
+        current_cost, current_vertex, current_direction, path = heapq.heappop(Q)
 
         if current_cost > visited[(current_vertex, current_direction)] or current_cost > best_cost:
             continue
@@ -107,13 +107,13 @@ def dijkstra2(grid, start):
         if grid[next_move] != WALL:
             new_path = path.copy()
             new_path.add(next_move)
-            Q.append((next_move, current_direction, current_cost+WALK_COST, new_path))
+            heapq.heappush(Q, (current_cost+WALK_COST, next_move, current_direction, new_path))
 
         left = TURNS[current_direction][0]
         right = TURNS[current_direction][1]
 
-        Q.append((current_vertex, left, current_cost+TURN_COST, path.copy()))
-        Q.append((current_vertex, right, current_cost+TURN_COST, path.copy()))
+        heapq.heappush(Q, (current_cost+TURN_COST, current_vertex, left, path.copy()))
+        heapq.heappush(Q, (current_cost+TURN_COST, current_vertex, right, path.copy()))
 
     return len(seats)
 
