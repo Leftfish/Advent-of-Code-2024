@@ -1,43 +1,11 @@
+# A very inefficient and horribly written part 2; this solution https://www.reddit.com/r/adventofcode/comments/1hfboft/comment/m2au5b1/ helped a lot.
+
 import os
 
 import heapq
-from itertools import cycle
+from collections import defaultdict, deque
 
 DAY = 16
-
-TEST_DATA = '''###############
-#.......#....E#
-#.#.###.#.###.#
-#.....#.#...#.#
-#.###.#####.#.#
-#.#.#.......#.#
-#.#.#####.###.#
-#...........#.#
-###.#.#####.#.#
-#...#.....#.#.#
-#.#.#.###.#.#.#
-#.....#...#.#.#
-#.###.#.#.#.#.#
-#S..#.....#...#
-###############'''
-
-TEST_DATA = '''#################
-#...#...#...#..E#
-#.#.#.#.#.#.#.#.#
-#.#.#.#...#...#.#
-#.#.#.#.###.#.#.#
-#...#.#.#.....#.#
-#.#.#.#.#.#####.#
-#.#...#.#.#.....#
-#.#.#####.#.###.#
-#.#.#.......#...#
-#.#.###.#####.###
-#.#.#...#.....#.#
-#.#.#.#####.###.#
-#.#.#.........#.#
-#.#.#.#########.#
-#S#.............#
-#################'''
 
 START = 'S'
 END = 'E'
@@ -50,6 +18,9 @@ TURN_COST = 1000
 UP, RIGHT, DOWN, LEFT = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 DIRECTIONS = [UP, RIGHT, DOWN, LEFT]
+
+TURNS = {UP: (LEFT, RIGHT), DOWN: (LEFT, RIGHT), RIGHT: (UP, DOWN), LEFT: (UP, DOWN)}
+
 
 def parse(data):
     grid = {}
@@ -83,30 +54,94 @@ def dijkstra(grid, start):
             i, j = current_vertex
             di, dj = direction
             neighbor = ((i+di, j+dj), direction)
-            if grid[neighbor[0]] != WALL:
+            if neighbor[0] in grid and grid[neighbor[0]] != WALL:
                 neighbors.append(neighbor)
 
-        for neighbor in neighbors:
-            neighbor_coords, neighbor_direction = neighbor
+        for neighbor_coords, neighbor_direction in neighbors:
+            if neighbor_coords in visited:
+                continue
             if neighbor_direction != current_direction:
                 distance = TURN_COST + WALK_COST
             else:
                 distance = WALK_COST
-            if neighbor_coords not in visited:
-                old_cost = distances[neighbor_coords]
-                new_cost = distances[current_vertex] + distance
-                if new_cost < old_cost:
-                    heapq.heappush(pq, (new_cost, neighbor_coords, neighbor_direction))
-                    distances[neighbor_coords] = new_cost
+            
+            old_cost = distances[neighbor_coords]
+            new_cost = distances[current_vertex] + distance
+
+            if new_cost < old_cost:
+                heapq.heappush(pq, (new_cost, neighbor_coords, neighbor_direction))
+                distances[neighbor_coords] = new_cost
     return distances
 
 
+def dijkstra2(grid, start):
+    distances = {vertex: float('inf') for vertex in grid if grid[vertex] != WALL}
+    distances[start] = 0
+    visited = defaultdict(lambda: float('inf'))
+    seats = set()
+    best_cost = float('inf')
+
+    path = set([start])
+    Q = deque([(start, RIGHT, 0, path)])
+
+    while Q:
+        current_vertex, current_direction, current_cost, path = Q.popleft()
+
+        if current_cost > visited[(current_vertex, current_direction)] or current_cost > best_cost:
+            continue
+        else:
+            visited[(current_vertex, current_direction)] = current_cost
+
+        if grid[current_vertex] == END:
+            if current_cost < best_cost:
+                best_cost = current_cost
+                seats = path
+            elif current_cost == best_cost:
+                seats.update(path)
+            continue
+
+        di, dj = current_direction
+        i, j = current_vertex
+        next_move = (i+di, j+dj)
+
+        if grid[next_move] != WALL:
+            new_path = path.copy()
+            new_path.add(next_move)
+            Q.append((next_move, current_direction, current_cost+WALK_COST, new_path))
+
+        left = TURNS[current_direction][0]
+        right = TURNS[current_direction][1]
+
+        Q.append((current_vertex, left, current_cost+TURN_COST, path.copy()))
+        Q.append((current_vertex, right, current_cost+TURN_COST, path.copy()))
+
+    return len(seats)
+
+
+TEST_DATA = '''#################
+#...#...#...#..E#
+#.#.#.#.#.#.#.#.#
+#.#.#.#...#...#.#
+#.#.#.#.###.#.#.#
+#...#.#.#.....#.#
+#.#.#.#.#.#####.#
+#.#...#.#.#.....#
+#.#.#####.#.###.#
+#.#.#.......#...#
+#.#.###.#####.###
+#.#.#...#.....#.#
+#.#.#.#####.###.#
+#.#.#.........#.#
+#.#.#.#########.#
+#S#.............#
+#################'''
+
+
 grid, start, end = parse(TEST_DATA)
-
-
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
 print('Shortest path:', dijkstra(grid, start)[end] == 11048)
+print('How many seats:', dijkstra2(grid, start) == 64)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
@@ -114,3 +149,5 @@ with open(input_path, mode='r', encoding='utf-8') as inp:
     data = inp.read()
     grid, start, end = parse(data)
     print('Shortest path:', dijkstra(grid, start)[end])
+    print('Part 2 may take a while...')
+    print('How many seats:', dijkstra2(grid, start))

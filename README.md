@@ -8,9 +8,7 @@ For the seventh time tried to find out how far I can make it in [Advent of Code]
 * [2022](https://github.com/Leftfish/Advent-of-Code-2022): 25 days for the third time!
 * [2023](https://github.com/Leftfish/Advent-of-Code-2023): 25 days for the fourth time!
 
-Not only am I (still) not a pro, nor do I have a degree in computer science, but also this is a pretty challenging time for me. So I'm totally not sure how much effort I can devote to AoC this year. But let's try anyone. 
-
-As every year, shoutout to the wonderful [AoC community on reddit](https://www.reddit.com/r/adventofcode/).
+Not only am I (still) not a pro, nor do I have a degree in computer science, but also this is a pretty challenging time for me. So I'm totally not sure how much effort I can devote to AoC this year. As of Day 16, I managed to solve all the problems on the same day. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation.
 
 Things I **L**earned, **R**evised or **I**mproved at in 2024:
 
@@ -29,3 +27,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 13 Python](13/d13.py): linear algebra (**I**) and Cramer's rule (**L**)
 * [Day 14 Python](14/d14.py): using modulo (**R**) and saving plots made in matplotlib (**L**) (which I tried in a buggy solution what didn't make it to the final one)
 * [Day 15 Python](15/d15.py): reinventing the wheel, because that's what I did when I came up with something that turned out to be just flood-fill BFS (**R**)
+* [Day 16 Python](16/d16.py): Dijkstra's algorithm (**R**) with a twist requiring me to track the paths and that really made it difficult for me to implement (**L**)
