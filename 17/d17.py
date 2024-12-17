@@ -6,12 +6,6 @@ from numpy import base_repr
 
 DAY = 17
 
-TEST_DATA = '''Register A: 729
-Register B: 0
-Register C: 0
-
-Program: 0,1,5,4,3,0'''
-
 A = 'A'
 B = 'B'
 C = 'C'
@@ -55,63 +49,72 @@ class Computer:
     def adv(self, operand, combo):
         result = self.registers[A] >> combo
         self.registers[A] = result
-        if self.debug:print(f'{self.ptr} => A DIV => A = A >> {combo} res: {base_repr(result, 8)}')
+        if self.debug:
+            print(f'{self.ptr} => A DIV => A = A >> {combo} res: {base_repr(result, 8)}')
         self.ptr += 2
 
     def bdv(self, operand, combo):
         result = self.registers[A] >> combo
         self.registers[B] = result
-        if self.debug:print(f'{self.ptr} => B DIV => B = A >> {combo} res: {base_repr(result, 8)}')
+        if self.debug:
+            print(f'{self.ptr} => B DIV => B = A >> {combo} res: {base_repr(result, 8)}')
         self.ptr += 2
 
     def cdv(self, operand, combo):
         result = self.registers[A] >> combo
         self.registers[C] = result
-        if self.debug:print(f'{self.ptr} => C DIV => C = A >> {combo} res: {base_repr(result, 8)}')
+        if self.debug:
+            print(f'{self.ptr} => C DIV => C = A >> {combo} res: {base_repr(result, 8)}')
         self.ptr += 2
 
     def bxl(self, operand, combo):
         result = self.registers[B] ^ operand
         self.registers[B] = result
-        if self.debug:print(f'{self.ptr} => B XOR LIT => B = B ^ {operand} res: {base_repr(result, 8)})')
+        if self.debug:
+            print(f'{self.ptr} => B XOR LIT => B = B ^ {operand} res: {base_repr(result, 8)})')
         self.ptr += 2
 
     def bxc(self, operand, combo):
         result = self.registers[B] ^ self.registers[C]
         self.registers[B] = result
-        if self.debug:print(f'{self.ptr} => B XOR C => B = B ^ C res: {base_repr(result, 8)})')
+        if self.debug:
+            print(f'{self.ptr} => B XOR C => B = B ^ C res: {base_repr(result, 8)})')
         self.ptr += 2
     
     def bst(self, operand, combo):
         result = combo % 8
         self.registers[B] = result
-        if self.debug:print(f'{self.ptr} => {[k for k, v in self.registers.items() if v == combo][0]} % 8 => B = {base_repr(combo, 8)} % 8  (res: {base_repr(result, 8)})')
+        if self.debug: 
+            print(f'{self.ptr} => {[k for k, v in self.registers.items() if v == combo][0]} % 8 => B = {base_repr(combo, 8)} % 8  (res: {base_repr(result, 8)})')
         self.ptr += 2
 
     def jnz(self, operand, combo):
         if self.registers[A] == 0:
-            if self.debug:print(f'{self.ptr} ==> JNZ; NO JUMP')
+            if self.debug:
+                print(f'{self.ptr} ==> JNZ; NO JUMP')
             self.ptr += 2
         else:
-            if self.debug:print(f'{self.ptr} ==> JNZ; JUMP TO {operand}')
+            if self.debug:
+                print(f'{self.ptr} ==> JNZ; JUMP TO {operand}')
             self.ptr = operand
 
     def out(self, operand, combo):
         result = combo % 8
         self.output.append(result)
-        if self.debug:print(f'{self.ptr} ==> OUTPUT {base_repr(combo, 8)} % 8 (res: {base_repr(result, 8)})')
+        if self.debug:
+            print(f'{self.ptr} ==> OUTPUT {base_repr(combo, 8)} % 8 (res: {base_repr(result, 8)})')
         self.ptr += 2
 
     def exec(self):
         if self.ptr >= len(self.instructions):
             self.running = False
-            if self.debug:print(f'{self.ptr} ==> EOF')
+            if self.debug:
+                print(f'{self.ptr} ==> EOF')
         else:
-            #print('Running instruction', self.instructions[self.ptr], 'Operand:', self.instructions[self.ptr+1])
-            if self.debug: print('     Status:', self)
+            if self.debug: 
+                print('     Status:', self)
             instruction, operand, combo = self._parse_instruction()
             instruction(operand, combo)
-            
 
     def run(self, debug=False):
         self.debug = debug
@@ -163,11 +166,13 @@ def find_quine(expected):
                 new_state = (new.copy(), digit + 1)
                 stack.append(new_state)
 
+
 def parse(data):
     regex = r'Register A: (\d+)\nRegister B: (\d+)\nRegister C: (\d+)\n\nProgram: (.+)'
     a, b, c, instructions = re.findall(regex, data)[0]
     instructions = instructions.split(',')
     return int(a), int(b), int(c), instructions
+
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
