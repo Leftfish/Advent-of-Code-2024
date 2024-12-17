@@ -28,3 +28,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 14 Python](14/d14.py): using modulo (**R**) and saving plots made in matplotlib (**L**) (which I tried in a buggy solution what didn't make it to the final one)
 * [Day 15 Python](15/d15.py): reinventing the wheel, because that's what I did when I came up with something that turned out to be just flood-fill BFS (**R**)
 * [Day 16 Python](16/d16.py): Dijkstra's algorithm (**R**) with a twist requiring me to track the paths and that really made it difficult for me to implement (**L**)
+* [Day 17 Python](17/d17.py): reverse-engineering (**I**), thinking in bases other than 2 and 10, namely base8 (**L**), bitwise operations (**I**) and DFS (**R**) to solve the toughest and most entertaining puzzle so far this year
