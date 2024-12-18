@@ -41,13 +41,13 @@ def check_grid(w, h, walls, wall_number):
             if neighbor in G:
                 G.add_edge(node, neighbor)
 
-    return len(nx.shortest_path(G, start, target)) - 1
+    return nx.shortest_path_length(G, start, target)
 
 
 def binary_search(w, h, walls, start):
     low = start
     high = len(walls)
-    best = []
+    best = float('inf')
 
     while low <= high:
         mid = (low + high) // 2
@@ -55,10 +55,10 @@ def binary_search(w, h, walls, start):
             check_grid(w, h, walls, mid)
             low = mid + 1
         except nx.NetworkXNoPath:
-            best.append(mid)
+            best = min(best, mid)
             high = mid - 1
 
-    blockade = walls[min(best)-1]
+    blockade = walls[best-1]
     return f'{blockade[1]},{blockade[0]}'
 
 TEST_DATA = '''5,4
