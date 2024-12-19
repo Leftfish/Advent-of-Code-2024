@@ -4,6 +4,40 @@ from functools import cache
 
 DAY = 19
 
+
+def parse(data):
+    patterns, towels = data.split('\n\n')
+    return frozenset(patterns.split(', ')), towels.splitlines()
+
+
+@cache
+def make_towels(source: str, rest: str, target: str, patterns: frozenset[str]):
+    if not rest:
+        return 1 if source == target else 0
+
+    total = 0
+    candidates = []
+
+    for pattern in patterns:
+        if rest.startswith(pattern):
+            new_source = source + pattern
+            new_rest = rest[len(pattern):]
+            candidates.append((new_source, new_rest))
+            total += make_towels(new_source, new_rest, target, patterns)
+
+    return total
+
+
+def make_all_towels(patterns, towels):
+    possible, ways = 0, 0
+    for towel in towels:
+        result = make_towels('', towel, towel, patterns)
+        if result:
+            possible += 1
+            ways += result
+    return possible, ways
+
+
 TEST_DATA = '''r, wr, b, g, bwu, rb, gb, br
 
 brwrr
@@ -14,53 +48,16 @@ ubwu
 bwurrg
 brgr
 bbrgwb'''
-def parse(data):
-    towels, patterns = data.split('\n\n')
-    return frozenset(towels.split(', ')), patterns.splitlines()
-
-@cache
-def go(source, rest, target, towels):
-    #print(f'Checking source={source}, rest={rest} to look for {target}')
-
-    if not rest:
-        #print('END', source, source == target)
-        return source == target
-
-    candidates = [] 
-    for towel in towels:
-        if rest.startswith(towel):
-            new_source = source + towel
-            new_rest = rest[len(towel):]
-            candidates.append((new_source, new_rest))
-
-    return any([go(new_source, new_rest, target, towels) for new_source, new_rest in candidates])
-
-s = 0
-towels, patterns = parse(TEST_DATA)
-for target in patterns:
-    #print('check', target, patterns)
-    start = ''
-    rest = target
-    if go(start, target, target, towels):
-        s += 1
-print(s)
 
 
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
+possible, ways = make_all_towels(*parse(TEST_DATA))
+print(f'Possible designs:', possible == 6, 'Available ways:', ways == 16)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
-
-
-s = 0
-towels, patterns = parse(data)
-for target in patterns:
-    #print('check', target)
-    start = ''
-    rest = target
-    if go(start, target, target, towels):
-        s += 1
-print(s)
+    possible, ways = make_all_towels(*parse(data))
+    print(f'Possible designs:', possible, 'Available ways:', ways)

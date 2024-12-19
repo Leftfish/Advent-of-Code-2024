@@ -30,3 +30,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 16 Python](16/d16.py): Dijkstra's algorithm (**R**) with a twist requiring me to track the paths and that really made it difficult for me to implement (**L**)
 * [Day 17 Python](17/d17.py): reverse-engineering (**I**), thinking in bases other than 2 and 10, namely base8 (**L**), bitwise operations (**I**) and DFS (**R**) to solve the toughest and most entertaining puzzle so far this year
 * [Day 18 Python](18/d18.py): I've already implemented Dijkstra's algorithm this year, so this time I decided to refresh networkx (**R**) and binary search for part 2 (**R**)
+* [Day 19 Python](19/d19.py): recursive functions (in fact - pretty much a DFS?) (**I**), LRU-cache (**R**) and frozenset (**R**)
