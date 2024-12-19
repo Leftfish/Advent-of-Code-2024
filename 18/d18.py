@@ -48,7 +48,7 @@ def binary_search(w, h, walls, start):
     low = start
     high = len(walls)
     best = float('inf')
-
+    
     while low <= high:
         mid = (low + high) // 2
         try:
