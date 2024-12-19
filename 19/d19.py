@@ -5,7 +5,7 @@ from functools import cache
 DAY = 19
 
 
-def parse(data):
+def parse(data: str) -> tuple[frozenset, list[str]]:
     patterns, towels = data.split('\n\n')
     return frozenset(patterns.split(', ')), towels.splitlines()
 
@@ -16,19 +16,16 @@ def make_towels(source: str, rest: str, target: str, patterns: frozenset[str]):
         return 1 if source == target else 0
 
     total = 0
-    candidates = []
 
     for pattern in patterns:
         if rest.startswith(pattern):
-            new_source = source + pattern
-            new_rest = rest[len(pattern):]
-            candidates.append((new_source, new_rest))
-            total += make_towels(new_source, new_rest, target, patterns)
+            total += make_towels(source + pattern, \
+                                 rest[len(pattern):], target, patterns)
 
     return total
 
 
-def make_all_towels(patterns, towels):
+def make_all_towels(patterns: frozenset, towels: list):
     possible, ways = 0, 0
     for towel in towels:
         result = make_towels('', towel, towel, patterns)
