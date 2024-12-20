@@ -2,24 +2,8 @@ import os
 
 import heapq
 from collections import defaultdict
+
 DAY = 20
-
-TEST_DATA = '''###############
-#...#...#.....#
-#.#.#.#.#.###.#
-#S#...#.#.#...#
-#######.#.#.###
-#######.#.#...#
-#######.#.###.#
-###..E#...#...#
-###.#######.###
-#...###...#...#
-#.#####.#.###.#
-#.#...#.#.#...#
-#.#.#.#.#.#.###
-#...#...#...###
-###############'''
-
 
 START = 'S'
 END = 'E'
@@ -69,7 +53,7 @@ def dijkstra(grid, start):
         for neighbor_coords in neighbors:
             if neighbor_coords in visited:
                 continue
-            
+
             old_cost = distances[neighbor_coords]
             new_cost = distances[current_vertex] + 1
 
@@ -79,14 +63,10 @@ def dijkstra(grid, start):
                 path.append(neighbor_coords)
     return distances, path
 
-def grid_dimensions(grid):
-    w = max((i for i, j in grid.keys()))
-    h = max((j for i, j in grid.keys()))
-    return w, h
-
 
 def manhattan(this, other):
     return abs(this[0] - other[0]) + abs(this[1] - other[1])
+
 
 def look_around(grid, vertex, distance):
     i, j = vertex
@@ -97,52 +77,47 @@ def look_around(grid, vertex, distance):
                     manhattan(vertex, (di, dj)) <= distance:
                 yield (di, dj)
 
-grid, start, end = parse(TEST_DATA)
-from_start, path_from_start = dijkstra(grid, start)
-from_end, path_from_end = dijkstra(grid, end)
 
-best = from_start[end]
-
-cheats = defaultdict(int)
-hop_dist = 20
-for point in path_from_start:
-    for candidate_hop in look_around(grid, point, hop_dist):
-        new_dist = from_start[point] + hop_dist + from_end[candidate_hop]
-        delta = best - new_dist
-        if delta >= 50:
-            cheats[delta] += 1
-print(cheats)
-
-# dijkstra od startu
-# dijkstra od mety
-# leć po ścieżce od startu, sprawdzaj hopki o 2-20
-# jeśli od startu do hopka i od mety do target-hopka jest mniej niż miało być = cheat
-# jeśli cheat dostatecznie dobry - policz go
+def count_cheats(grid, start, end, hop_dist, minimum_delta):
+    from_start, path_from_start = dijkstra(grid, start)
+    from_end, _ = dijkstra(grid, end)
+    best = from_start[end]
+    cheats = defaultdict(int)
+    for point in path_from_start:
+        for candidate_hop in look_around(grid, point, hop_dist):
+            new_dist = from_start[point] + manhattan(point, candidate_hop) + from_end[candidate_hop]
+            delta = best - new_dist
+            if delta >= minimum_delta:
+                cheats[delta] += 1
+    return cheats
 
 
-
+TEST_DATA = '''###############
+#...#...#.....#
+#.#.#.#.#.###.#
+#S#...#.#.#...#
+#######.#.#.###
+#######.#.#...#
+#######.#.###.#
+###..E#...#...#
+###.#######.###
+#...###...#...#
+#.#####.#.###.#
+#.#...#.#.#...#
+#.#.#.#.#.#.###
+#...#...#...###
+###############'''
 
 
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
+grid, start, end = parse(TEST_DATA)
+print('Good 20-picosecond cheats:', sum(count_cheats(grid, start, end, 20, 50).values()) == 285)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
-
-grid, start, end = parse(data)
-from_start, path_from_start = dijkstra(grid, start)
-from_end, path_from_end = dijkstra(grid, end)
-
-best = from_start[end]
-
-cheats = defaultdict(int)
-hop_dist = 2
-for point in path_from_start:
-    for candidate_hop in look_around(grid, point, hop_dist):
-        new_dist = from_start[point] + hop_dist + from_end[candidate_hop]
-        delta = best - new_dist
-        if delta >= 100:
-            cheats[delta] += 1
-print(sum(cheats.values()))
+    grid, start, end = parse(data)
+    print('Good 2-picosecond cheats:', sum(count_cheats(grid, start, end, 2, 100).values()))
+    print('Good 20-picosecond cheats:', sum(count_cheats(grid, start, end, 20, 100).values()))
