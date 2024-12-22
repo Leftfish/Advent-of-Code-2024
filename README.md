@@ -33,3 +33,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 19 Python](19/d19.py): recursive functions (in fact - pretty much a DFS?) (**I**), LRU-cache (**R**) and frozenset (**R**)
 * [Day 20 Python](20/d20.py): Dijkstra's algorithm again (**R**) and the idea to run it from start to end in a maze, then from end to start (**I**), Manhattan distance (**R**), generators (**R**)
 * Day 21: TO DO
+* [Day 22 Python](22/d22.py): bitwise operations (**R**)
