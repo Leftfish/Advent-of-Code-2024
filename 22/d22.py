@@ -49,7 +49,7 @@ def get_2000(numbers, iters):
             price = new_price
         score += secret
 
-    return score, sequences
+    return score, max(sequences.values())
 
 
 TEST_DATA = '''1
@@ -63,7 +63,7 @@ print('Testing...')
 numbers = parse(TEST_DATA)
 sum_of_secrets, price_for_sequence = get_2000(numbers, 2000)
 print('Sum of 2000th secret number:', sum_of_secrets == 37990510)
-print('Best price:', max(price_for_sequence.values()) == 23)
+print('Best price:', price_for_sequence == 23)
 
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
@@ -73,4 +73,4 @@ with open(input_path, mode='r', encoding='utf-8') as inp:
     numbers = parse(data)
     sum_of_secrets, price_for_sequence = get_2000(numbers, 2000)
     print('Sum of 2000th secret number:', sum_of_secrets)
-    print('Best price:', max(price_for_sequence.values()))
+    print('Best price:', price_for_sequence)

@@ -34,3 +34,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 20 Python](20/d20.py): Dijkstra's algorithm again (**R**) and the idea to run it from start to end in a maze, then from end to start (**I**), Manhattan distance (**R**), generators (**R**)
 * Day 21: TO DO
 * [Day 22 Python](22/d22.py): bitwise operations (**R**)
+* [Day 23 Python](23/d23.py): clique problem (**L**) and networkx (**I**)
