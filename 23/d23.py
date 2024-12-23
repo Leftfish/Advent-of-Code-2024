@@ -19,12 +19,11 @@ def parse(data):
 
 def solve_networkx(graph):
     s = set()
-    for cycle in nx.simple_cycles(graph, length_bound=3):
-        for node in cycle:
+    for clique in [cl for cl in nx.enumerate_all_cliques(G) if len(cl) == 3]:
+        for node in clique:
             if node.startswith('t'):
-                s.add(tuple(cycle))
-
-    password = ','.join(sorted(sorted(list(nx.find_cliques(graph)), key=lambda x: len(x))[-1]))
+                s.add(tuple(clique))
+    password = ','.join(sorted(sorted(list(nx.find_cliques(graph)), key=lambda cl: len(cl))[-1]))
     return len(s), password
 
 
