@@ -3,8 +3,7 @@ import os
 import re
 from collections import deque, defaultdict
 
-DAY = 23
-
+DAY = 24
 
 class Gate:
     def __init__(self, name, a=None, b=None, out=None):
@@ -33,19 +32,6 @@ class OR(Gate):
 class XOR(Gate):
     def exec(self, wires):
         return wires[self.a] ^ wires[self.b]
-
-
-TEST_DATA = '''x00: 1
-x01: 1
-x02: 1
-y00: 0
-y01: 1
-y02: 0
-
-x00 AND y00 -> z00
-x01 XOR y01 -> z01
-x02 OR y02 -> z02'''
-
 
 
 def parse(data):
@@ -85,6 +71,7 @@ def parse(data):
     
     return wires, gates, exec_queue, wire_to_gate
 
+
 def get_z(wires):
     number = ''
     for wire in sorted(wires):
@@ -92,6 +79,19 @@ def get_z(wires):
             number += str(wires[wire])
     number = '0b' + number[::-1]
     return number, int(number, 2)
+
+
+def run_gates(wires, gates, exec_queue, wire_to_gate):
+    while exec_queue:
+        to_exec = exec_queue.popleft()
+        target = to_exec.out
+        result = to_exec.exec(wires)
+        wires[target] = result
+        for potential_next in wire_to_gate[target]:
+            if potential_next not in exec_queue and potential_next.ready(wires):
+                exec_queue.append(potential_next)
+    return get_z(wires)[1]
+
 
 TEST_DATA = '''x00: 1
 x01: 0
@@ -141,27 +141,14 @@ hwm AND bqk -> z03
 tgd XOR rvg -> z12
 tnw OR pbm -> gnj'''
 
-
-
 wires, gates, exec_queue, wire_to_gate = parse(TEST_DATA)
-
-while exec_queue:
-    to_exec = exec_queue.popleft()
-    target = to_exec.out
-    result = to_exec.exec(wires)
-    wires[target] = result
-    for potential_next in wire_to_gate[target]:
-        if potential_next not in exec_queue and potential_next.ready(wires):
-            exec_queue.append(potential_next)
-
-print(get_z(wires))
-
-
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
+print('Number:', run_gates(wires, gates, exec_queue, wire_to_gate) == 2024)
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
-
+    wires, gates, exec_queue, wire_to_gate = parse(data)
+    print('Number:', run_gates(wires, gates, exec_queue, wire_to_gate))

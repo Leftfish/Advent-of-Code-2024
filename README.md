@@ -8,7 +8,7 @@ For the seventh time tried to find out how far I can make it in [Advent of Code]
 * [2022](https://github.com/Leftfish/Advent-of-Code-2022): 25 days for the third time!
 * [2023](https://github.com/Leftfish/Advent-of-Code-2023): 25 days for the fourth time!
 
-Not only am I (still) not a pro, nor do I have a degree in computer science, but also this is a pretty challenging time for me. As of Day 23, I managed to solve all the problems on the same day with one exception - Day 21. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation. Another one was Day 20 part 2 - I think I was just tired, because I ended up solving the puzzle after applying an idea that I'd already used this year, but needed a nudge from Reddit to return to it. Day 21 defeated me - due to time constraints, but also it's difficulty. It's going to wait for a better moment :)
+Not only am I (still) not a pro, nor do I have a degree in computer science, but also this is a pretty challenging time for me. As of Day 23, I managed to solve all the problems on the same day with one exception - Day 21. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation. Another one was Day 20 part 2 - I think I was just tired, because I ended up solving the puzzle after applying an idea that I'd already used this year, but needed a nudge from Reddit to return to it. The difficulty of Day 21 and Day 24 part 2, as well as time constraints, caused me to abandon both for now.
 
 Things I **L**earned, **R**evised or **I**mproved at in 2024:
 
@@ -35,3 +35,4 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * Day 21: TO DO
 * [Day 22 Python](22/d22.py): bitwise operations (**R**) and using [xorshift](https://en.wikipedia.org/wiki/Xorshift) to generate pseudorandom numbers (**L**)
 * [Day 23 Python](23/d23.py): [clique problem](https://en.wikipedia.org/wiki/Clique_problem) (**L**) and networkx (**I**)
+* [Day 24 Python](24/d24.py): logic gates (**R**), PART 2 TO DO
