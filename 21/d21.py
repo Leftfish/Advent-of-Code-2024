@@ -1,15 +1,12 @@
+### The solution implements this tutorial: https://www.reddit.com/r/adventofcode/comments/1hjx0x4/2024_day_21_quick_tutorial_to_solve_part_2_in/
+### I gave up after three unsuccessful attempts to solve Day 21 by myself.
+
 import os
 
 import networkx as nx
 from itertools import product
 
 DAY = 21
-
-TEST_DATA = '''029A
-980A
-179A
-456A
-379A'''
 
 NUMPAD = '''789
 456
@@ -83,66 +80,6 @@ KEYPAD_DIRECTIONS = {('^', 'A'): R,
 
 directions = ((-1, 0), (1, 0), (0, -1), (0, 1), (0, 0))
 
-def score_path(path):
-    s = 0
-    for start, end in zip(path, path[1:]):
-        if start != end:
-            s -= 1
-    return s
-
-def get_paths(keyboard, keyboard_directions):
-    grd = list(line for line in keyboard.splitlines())
-    keyboard_graph = {}
-    graph = nx.Graph()
-    for i, line in enumerate(grd):
-        for j, c in enumerate(line):
-            if c != '.':
-                keyboard_graph[(i, j)] = c
-                graph.add_node(c)
-
-    for k, v in keyboard_graph.items():
-        i, j = k
-        for direction in directions:
-            di, dj = direction
-            adj = (i+di, j+dj)
-            if adj in keyboard_graph:
-                graph.add_edge(v, keyboard_graph[adj])
-
-    node_to_node = product(graph.nodes, graph.nodes)
-    paths = {}
-    for pair in node_to_node:
-        start, end = pair
-        paths[(start, end)] = nx.shortest_path(graph, start, end)
-        paths[(end, start)] = nx.shortest_path(graph, end, start)
-
-
-    proper_paths = {}
-    for k, v in paths.items():
-        steps = zip(v, v[1:])
-        s = ''
-        for step in steps:
-            s += keyboard_directions[step]
-        proper_paths[k] = s
-
-    return proper_paths
-
-
-numpad_paths = get_paths(NUMPAD, NUMPAD_DIRECTIONS)
-keypad_paths = get_paths(KEYPAD, KEYPAD_DIRECTIONS)
-to_write = list('029A')
-steps = list(zip(to_write, to_write[1:]))
-current = ENTER
-nxt = steps[0][0]
-steps.insert(0, (current, nxt))
-total = ''
-for pair in steps:
-    total += numpad_paths[pair]
-    total += ENTER
-print(total)
-
-
-
-print('-----')
 
 def get_shortest_paths(keyboard):
     grd = list(line for line in keyboard.splitlines())
@@ -166,7 +103,6 @@ def get_shortest_paths(keyboard):
     paths = {}
     for pair in node_to_node:
         start, end = pair
-
         
         paths[(start, end)] = list(nx.all_shortest_paths(graph, start, end))
         paths[(end, start)] = list(nx.all_shortest_paths(graph, end, start))
@@ -174,72 +110,100 @@ def get_shortest_paths(keyboard):
 
 def num_to_arrows(current, target, numpad_paths):
     paths = []
-    best_score = -float('inf')
     candidates = numpad_paths[(current, target)]
     for c in candidates:
         s = ''
         steps = zip(c, c[1:])
         for step in steps:
             s += NUMPAD_DIRECTIONS[step]
-        s += ENTER
-        if score_path(s) > best_score:
-            best_score = score_path(s)
-            paths.append(s)
-    return paths[-1]
+        paths.append(s)
+    return paths
 
 def arrows_to_arrows(current, target, keypad_paths):
     paths = []
-    best_score = -float('inf')
     candidates = keypad_paths[(current, target)]
     for c in candidates:
         s = ''
         steps = zip(c, c[1:])
         for step in steps:
             s += KEYPAD_DIRECTIONS[step]
-        s += ENTER
-        if score_path(s) > best_score:
-            best_score = score_path(s)
-            paths.append(s)
-    return paths[-1]
+        paths.append(s)
+    return paths
 
-def score_path(path):
-    s = 0
-    for start, end in zip(path, path[1:]):
-        if start != end:
-            s -= 1
-    return s
+
+def build_sequence(to_write, idx, previous, current_path, result, translation_dict):
+    if idx == len(to_write):
+        result.append(current_path)
+        return result
+    for path in translation_dict[previous, to_write[idx]]:
+        build_sequence(to_write, idx+1, to_write[idx], current_path + path + 'A', result, translation_dict)
+    return result
+
+
+def splita(seq):
+    res = []
+    i, j = 0, 0
+    while j < len(seq):
+        if seq[j] == 'A':
+            res.append(seq[i:j+1])
+            i = j + 1
+        j += 1
+    return res
+
+
+def get_shortest(to_write, depth, cache):
+    if depth == 0:
+        return len(to_write)
+
+    if (to_write, depth) in cache:
+        return cache[(to_write, depth)]
+
+    split = splita(to_write)
+    total = 0
+
+    for sub_to_write in split:
+        sequences = build_sequence(sub_to_write, 0, 'A', '', [], keypad_paths_translated)
+        lengths = [get_shortest(sequence, depth-1, cache) for sequence in sequences]
+        total += min(lengths)
+
+    cache[to_write, depth] = total
+
+    return total
+
+
+def solve(all_nums_to_write, max_depth, cache, numpad_paths_translated):
+    result = 0
+    for nums_to_write in all_nums_to_write:  
+        nums_to_arrows = build_sequence(nums_to_write, 0, 'A', '', [], numpad_paths_translated)
+        to_int = int(nums_to_write[:-1])
+        candidates = [get_shortest(sequence, max_depth, cache) for sequence in nums_to_arrows]
+        result += min(candidates) * to_int
+    return result
+
+
+TEST_DATA = '''029A
+980A
+179A
+456A
+379A'''
+
+
 
 keypad_paths = get_shortest_paths(KEYPAD)
+keypad_paths_translated = {(this, other): arrows_to_arrows(this, other, keypad_paths) for this, other in keypad_paths}
 numpad_paths = get_shortest_paths(NUMPAD)
-
-to_write = 'A' + '379A'
-steps = list(zip(to_write, to_write[1:]))
-first_robot = ''
-for pair in steps:
-    first_robot += num_to_arrows(pair[0], pair[1], numpad_paths)
-
-print(first_robot, len(first_robot))
-
-to_write = 'A' + first_robot
-steps = list(zip(to_write, to_write[1:]))
-second_robot = ''
-for pair in steps:
-    second_robot += arrows_to_arrows(pair[0], pair[1], keypad_paths)
-
-print(second_robot, len(second_robot))
-
-to_write = 'A' + second_robot
-steps = list(zip(to_write, to_write[1:]))
-third_robot = ''
-for pair in steps:
-    third_robot += arrows_to_arrows(pair[0], pair[1], keypad_paths)
-
-print(third_robot, len(third_robot))
+numpad_paths_translated = {(this, other): num_to_arrows(this, other, numpad_paths) for this, other in numpad_paths}
 
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
+cache = {}
+print('Two robots:', solve(TEST_DATA.splitlines(), 2, cache, numpad_paths_translated))
+print('Twenty five robots:', solve(TEST_DATA.splitlines(), 25, cache, numpad_paths_translated))
 
 input_path = f"{os.getcwd()}\\{str(DAY).zfill(2)}\\inp"
 with open(input_path, mode='r', encoding='utf-8') as inp:
     print('Solution...')
     data = inp.read()
+    cache = {}
+    print('Two robots:', solve(data.splitlines(), 2, cache, numpad_paths_translated))
+    print('Twenty five robots:', solve(data.splitlines(), 25, cache, numpad_paths_translated))

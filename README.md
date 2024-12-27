@@ -8,9 +8,9 @@ For the seventh time tried to find out how far I can make it in [Advent of Code]
 * [2022](https://github.com/Leftfish/Advent-of-Code-2022): 25 days for the third time!
 * [2023](https://github.com/Leftfish/Advent-of-Code-2023): 25 days for the fourth time!
 
-Not only am I (still) not a pro, nor do I have a degree in computer science, but also this is a pretty challenging time for me. As of Day 25, I managed to solve all the problems on the day of their release with two exceptions - Days 21 and Day 24 part 2. I finished Day 24 a day too late, mostly due to time constraints. Day 21 is just very difficult for me, and as far as I know, I'm not the only one who struggles with it. I do have an idea how to approach it, but time is not unlimited, so it has to wait a bit longer. On the whole, 47 stars on Day 25 is probably my best result ever in AoC.
+Again, I got all 50 stars! I managed to solve almost all the problems on the day of their release with two exceptions - Days 21 and Day 24 part 2. I finished Day 24 a day too late, mostly due to time constraints, and more about Day 21 a mit later on. 
 
-Although I'm not done yet, I can already say that it was a pretty good year in terms of not having to rely on suggestions, tutorials and other solutions. For now, I needed that twice. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation. Another one was Day 20 part 2 - I think I was just tired, because I ended up solving the puzzle after applying an idea that I'd already used this year, but needed a nudge from Reddit to return to it. 
+Overall, it was a pretty good year in terms of not having to rely on suggestions, tutorials and other solutions. I needed that three times - which is close to my personal best, or my personal best. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation. Another one was Day 20 part 2 - I think I was just tired, because I ended up solving the puzzle after applying an idea that I'd already used this year, but needed a nudge from Reddit to return to it. Finally, I gave up on Day 21 after three unsuccessful attempts. It turned out that I was on a decent path, but still need more practice with recursion and memoization. [This tutorial](https://www.reddit.com/r/adventofcode/comments/1hjx0x4/2024_day_21_quick_tutorial_to_solve_part_2_in/) was exactly what I needed - combined with my code it gave me the final two stars.
 
 Things I **L**earned, **R**evised or **I**mproved at in 2024:
 
@@ -34,7 +34,7 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 18 Python](18/d18.py): I've already implemented Dijkstra's algorithm this year, so this time I decided to refresh networkx (**R**) and binary search for part 2 (**R**)
 * [Day 19 Python](19/d19.py): recursive functions (in fact - pretty much a DFS?) (**I**), LRU-cache (**R**) and frozenset (**R**)
 * [Day 20 Python](20/d20.py): Dijkstra's algorithm again (**R**) and the idea to run it from start to end in a maze, then from end to start (**I**), Manhattan distance (**R**), generators (**R**)
-* Day 21: TO DO
+* [Day 21 Python](21/d21.py): recursion (**I**) and memoization (**I**)
 * [Day 22 Python](22/d22.py): bitwise operations (**R**) and using [xorshift](https://en.wikipedia.org/wiki/Xorshift) to generate pseudorandom numbers (**L**)
 * [Day 23 Python](23/d23.py): [clique problem](https://en.wikipedia.org/wiki/Clique_problem) (**L**) and networkx (**I**)
 * [Day 24 Python](24/d24.py): logic gates (**R**), adders (**I**) and ripple-carry adders (**L**), graphviz (**I**)
