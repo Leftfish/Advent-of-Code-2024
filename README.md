@@ -8,7 +8,7 @@ For the seventh time tried to find out how far I can make it in [Advent of Code]
 * [2022](https://github.com/Leftfish/Advent-of-Code-2022): 25 days for the third time!
 * [2023](https://github.com/Leftfish/Advent-of-Code-2023): 25 days for the fourth time!
 
-Again, I got all 50 stars! I managed to solve almost all the problems on the day of their release with two exceptions - Days 21 and Day 24 part 2. I finished Day 24 a day too late, mostly due to time constraints, and more about Day 21 a mit later on. 
+Again, I got all 50 stars! I managed to solve almost all the problems on the day of their release with two exceptions - Days 21 and Day 24 part 2. I finished Day 24 a day too late, mostly due to time constraints. More about Day 21 a bit later on. 
 
 Overall, it was a pretty good year in terms of not having to rely on suggestions, tutorials and other solutions. I needed that three times - which is close to my personal best, or my personal best. [Day 16 part 2](https://adventofcode.com/2024/day/16) was the first one that required me to have a look at the solutions posted by the [AoC community on reddit](https://www.reddit.com/r/adventofcode/) - it turned out that I had the right ideas and terrible approaches to implementation. Another one was Day 20 part 2 - I think I was just tired, because I ended up solving the puzzle after applying an idea that I'd already used this year, but needed a nudge from Reddit to return to it. Finally, I gave up on Day 21 after three unsuccessful attempts. It turned out that I was on a decent path, but still need more practice with recursion and memoization. [This tutorial](https://www.reddit.com/r/adventofcode/comments/1hjx0x4/2024_day_21_quick_tutorial_to_solve_part_2_in/) was exactly what I needed - combined with my code it gave me the final two stars.
 
@@ -30,8 +30,8 @@ Things I **L**earned, **R**evised or **I**mproved at in 2024:
 * [Day 14 Python](14/d14.py): using modulo (**R**) and saving plots made in matplotlib (**L**) (which I tried in a buggy solution what didn't make it to the final one)
 * [Day 15 Python](15/d15.py): reinventing the wheel, because that's what I did when I came up with something that turned out to be just flood-fill BFS (**R**)
 * [Day 16 Python](16/d16.py): Dijkstra's algorithm (**R**) with a twist requiring me to track the paths and that really made it difficult for me to implement (**L**)
-* [Day 17 Python](17/d17.py): reverse-engineering (**I**), thinking in bases other than 2 and 10, namely base8 (**L**), bitwise operations (**I**) and DFS (**R**) to solve the toughest and most entertaining puzzle so far this year
-* [Day 18 Python](18/d18.py): I've already implemented Dijkstra's algorithm this year, so this time I decided to refresh networkx (**R**) and binary search for part 2 (**R**)
+* [Day 17 Python](17/d17.py): reverse-engineering (**I**), thinking in bases other than 2 and 10, namely base8 (**L**), bitwise operations (**I**) and DFS (**R**) to solve the most entertaining puzzle this year
+* [Day 18 Python](18/d18.py): I've already implemented Dijkstra's algorithm this year, so this time I decided to refresh networkx (**R**), binary search for part 2 (**R**)
 * [Day 19 Python](19/d19.py): recursive functions (in fact - pretty much a DFS?) (**I**), LRU-cache (**R**) and frozenset (**R**)
 * [Day 20 Python](20/d20.py): Dijkstra's algorithm again (**R**) and the idea to run it from start to end in a maze, then from end to start (**I**), Manhattan distance (**R**), generators (**R**)
 * [Day 21 Python](21/d21.py): recursion (**I**) and memoization (**I**)

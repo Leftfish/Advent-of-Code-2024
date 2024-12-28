@@ -1,10 +1,11 @@
-### The solution implements this tutorial: https://www.reddit.com/r/adventofcode/comments/1hjx0x4/2024_day_21_quick_tutorial_to_solve_part_2_in/
+### The solution implements this tutorial:
+### https://www.reddit.com/r/adventofcode/comments/1hjx0x4/2024_day_21_quick_tutorial_to_solve_part_2_in/
 ### I gave up after three unsuccessful attempts to solve Day 21 by myself.
 
 import os
 
-import networkx as nx
 from itertools import product
+import networkx as nx
 
 DAY = 21
 
@@ -103,30 +104,20 @@ def get_shortest_paths(keyboard):
     paths = {}
     for pair in node_to_node:
         start, end = pair
-        
+
         paths[(start, end)] = list(nx.all_shortest_paths(graph, start, end))
         paths[(end, start)] = list(nx.all_shortest_paths(graph, end, start))
     return paths
 
-def num_to_arrows(current, target, numpad_paths):
-    paths = []
-    candidates = numpad_paths[(current, target)]
-    for c in candidates:
-        s = ''
-        steps = zip(c, c[1:])
-        for step in steps:
-            s += NUMPAD_DIRECTIONS[step]
-        paths.append(s)
-    return paths
 
-def arrows_to_arrows(current, target, keypad_paths):
+def convert_to_arrows(current, target, pad_paths, pad_directions):
     paths = []
-    candidates = keypad_paths[(current, target)]
+    candidates = pad_paths[(current, target)]
     for c in candidates:
         s = ''
         steps = zip(c, c[1:])
         for step in steps:
-            s += KEYPAD_DIRECTIONS[step]
+            s += pad_directions[step]
         paths.append(s)
     return paths
 
@@ -173,7 +164,7 @@ def get_shortest(to_write, depth, cache):
 
 def solve(all_nums_to_write, max_depth, cache, numpad_paths_translated):
     result = 0
-    for nums_to_write in all_nums_to_write:  
+    for nums_to_write in all_nums_to_write:
         nums_to_arrows = build_sequence(nums_to_write, 0, 'A', '', [], numpad_paths_translated)
         to_int = int(nums_to_write[:-1])
         candidates = [get_shortest(sequence, max_depth, cache) for sequence in nums_to_arrows]
@@ -190,9 +181,9 @@ TEST_DATA = '''029A
 
 
 keypad_paths = get_shortest_paths(KEYPAD)
-keypad_paths_translated = {(this, other): arrows_to_arrows(this, other, keypad_paths) for this, other in keypad_paths}
+keypad_paths_translated = {(this, other): convert_to_arrows(this, other, keypad_paths, KEYPAD_DIRECTIONS) for this, other in keypad_paths}
 numpad_paths = get_shortest_paths(NUMPAD)
-numpad_paths_translated = {(this, other): num_to_arrows(this, other, numpad_paths) for this, other in numpad_paths}
+numpad_paths_translated = {(this, other): convert_to_arrows(this, other, numpad_paths, NUMPAD_DIRECTIONS) for this, other in numpad_paths}
 
 print(f'Day {DAY} of Advent of Code!')
 print('Testing...')
